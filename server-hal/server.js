@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const port = 8000;
+const cors = require('cors');
 
 // Assuming your functions are in a file named 'dbHelpers.js'
 const {
@@ -12,10 +13,11 @@ const {
   create_sql_query,
 } = require('./models/sqlQuery');
 
+app.use(cors());
 app.use(bodyParser.json());
 
 // Endpoint to get all table names
-app.get('/tables', async (req, res) => {
+app.get('/api/tables', async (req, res) => {
   try {
     const tableNames = await getAllTableNames();
     res.json(tableNames);
@@ -25,8 +27,8 @@ app.get('/tables', async (req, res) => {
 });
 
 // Endpoint to get columns of a specific table
-// Using the uri of: http://localhost:8000/tables/all_data
-app.get('/tables/:table_name', async (req, res) => {
+// Using the uri of: http://localhost:8000/api/table/all_data
+app.get('/api/table/:table_name', async (req, res) => {
   try {
     const tableName = req.params.table_name;
     const columns = await getTableColumns({ tableName });
@@ -53,9 +55,9 @@ app.get('/api/query', async (req, res) => {
 
 // Getting all the we want by passing TableName & wanted column. 
 // if no column passed. it will automaticly send all the data avilable. 
-// ex. uri: http://localhost:8000/data?tableName=all_data&columns=name_he,name_en,id,home_town,age,phone_number
+// ex. uri: http://localhost:8000/api/data?tableName=all_data&columns=name_he,name_en,id,home_town,age,phone_number
 // ITF - create a function to check the names of the column if they are valid. if not - remove them and print an error.
-app.get('/data', async (req, res) => {
+app.get('/api/data', async (req, res) => {
     const tableName = req.query.tableName;
     const columnList = req.query.columns ? req.query.columns.split(',') : undefined;
   
