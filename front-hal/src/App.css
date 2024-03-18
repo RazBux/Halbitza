@@ -85,9 +85,15 @@
 .toolbar {
   display: flex;
   align-items: center;
+  justify-content: space-between; /* This will push the children to the edges */
   background-color: #3e659d;
   color: rgb(43, 42, 42);
   padding: 10px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
 }
 
 .menu-button {
@@ -202,7 +208,7 @@ hr {
 }
 
 /* modle css */
-.modal-backdrop {
+ .modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -229,4 +235,14 @@ hr {
   background: none;
   font-size: 1.5rem;
 }
-/* modal css */
+
+/* Add styles for the add-person-button for consistency and positioning */
+.add-person-button {
+  margin-left: auto; /* This pushes the button to the right */
+  padding: 8px 16px; /* Example padding, adjust as needed */
+  background-color: #f0f0f0; /* Example background color, adjust as needed */
+  border: none; /* Removes border */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border-radius: 5px; /* Rounds the corners of the button */
+}
+/* modal css  */
