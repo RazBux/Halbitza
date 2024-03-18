@@ -11,10 +11,14 @@ const DataTable = ({ tableName, columnName, backendURL }) => {
         const fetchData = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`${backendURL}api/data?tableName=${tableName}&columns=${columnName}`);
+                var query = `${backendURL}/data?tableName=${tableName}&columns=${columnName}`;
+                console.log(`query: ${query}`);
+                const response = await fetch(query);
+                
                 if (!response.ok) throw new Error('Network response was not ok');
                 const result = await response.json();
-                setData(result.data);
+                // setData(result.data);
+                setData(result || []);
             } catch (error) {
                 setError(error);
             } finally {

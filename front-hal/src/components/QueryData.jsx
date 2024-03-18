@@ -48,7 +48,7 @@ function QueryData({ backendURL }) { // Ensure backendURL is received as prop
       <ToolBar updateSelectedTable={updateSelectedTable} selectedTable={selectedTable} backendURL={backendURL} />
       <CategoryMenu selectedTable={selectedTable} updateCategories={updateCategories} backendURL={backendURL} />
       {/* Assuming DataTable is prepared to receive and process the data prop */}
-      <DataTable tableName={selectedTable} />
+      <DataTable backendURL={backendURL} tableName={selectedTable} columnName={selectedCategories} />
     </div>
   );
 }
