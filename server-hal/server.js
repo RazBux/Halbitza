@@ -11,6 +11,7 @@ const {
   getAllTableNames,
   getDataByQuery,
   create_sql_query,
+  insertIntoTable,
 } = require('./models/sqlQuery');
 
 app.use(cors());
@@ -74,12 +75,40 @@ app.get('/api/data', async (req, res) => {
     }
   });
   
+// POST endpoint to insert data into a table
+app.post('/api/data', async (req, res) => {
+  const { tableName, data } = req.body;
+  console.log('Received data:', tableName, data); // Log incoming data
+
+  if (!tableName || !data) {
+    return res.status(400).send('Table name and data are required.');
+  }
+
+  try {
+    const result = await insertIntoTable(tableName, data);
+    console.log('Insert result:', result); // Log success result
+    res.status(201).send(result);
+  } catch (error) {
+    console.error('Insertion error:', error); // Log any error that occurs
+    res.status(500).send(error.message);
+  }
+});
 
 
+// app.post('/api/data', async (req, res) => {
+//   const { tableName, data } = req.body;
 
+//   if (!tableName || !data) {
+//     return res.status(400).send('Table name and data are required.');
+//   }
 
-
-
+//   try {
+//     const result = await insertIntoTable({ tableName, data });
+//     res.status(201).send(result); // 201 Created
+//   } catch (error) {
+//     res.status(500).send(error.message);
+//   }
+// });
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

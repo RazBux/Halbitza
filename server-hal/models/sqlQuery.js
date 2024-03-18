@@ -83,25 +83,6 @@ function getDataByQuery(sqlQuery) {
   });
 }
 
-// //old version 
-// function create_sql_query({ tableName, columnList }) {
-//   // Ensure columnList is an array
-//   // console.log(Array.isArray(columnList));
-
-//   var columns;
-//   if (columnList) {
-//     columns = Array.isArray(columnList) && columnList.length > 0 ? columnList.join(', ') : '*';
-//   }
-//   else {
-//     columns = "*";
-//   }
-//   // console.log(`column: ${columns}`);
-//   // Create the SQL query string
-//   const query = `SELECT ${columns} FROM ${tableName};`;
-
-//   return getDataByQuery(query);
-// }
-//new version 
 function create_sql_query({ tableName, columnList }) {
     let columns = "*"; // Default to all columns if none are specified
   
@@ -117,40 +98,34 @@ function create_sql_query({ tableName, columnList }) {
     return getDataByQuery(query);
   }
 
+//insert values to the dataBase, this function if for the post request
+function insertIntoTable(tableName, data) {
+  return new Promise((resolve, reject) => {
+      const columns = Object.keys(data).join(', ');
+      const placeholders = Object.keys(data).map(() => '?').join(', ');
+      const values = Object.values(data);
+
+      const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`;
+
+      db.run(query, values, function(err) {
+          if (err) {
+              reject(err);
+          } else {
+              resolve({ id: this.lastID });
+          }
+      });
+  });
+}
+
+
+
 
 module.exports = {
   getTableColumns,
   getAllTableAndThierColumns,
   getAllTableNames,
   getDataByQuery,
-  create_sql_query
+  create_sql_query,
+  insertIntoTable
 };
 
-
-
-// ----to run all the query
-// Example usage
-// getAllTableColumns()
-//     .then(columnsByTable => {
-//         console.log('Columns by table:', columnsByTable);
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-
-// getAllTableNames()
-//     .then(tableNames => {
-//         console.log('Table names:', tableNames);
-//     })
-//     .catch(error => {
-//         console.error('Error:', error);
-//     });
-
-// var q = "SELECT quarter, total_revenues FROM tesla;"
-// let e = getDataByQuery(q);
-// console.log(e);
-// const sqlQuery = "SELECT quarter, total_revenues FROM tesla";
-// getDataByQuery(sqlQuery)
-//     .then(tableNames => {
-//         console.log('Table names:', tableNames);
-//     })

@@ -240,7 +240,7 @@ hr {
 .add-person-button {
   margin-left: auto; /* This pushes the button to the right */
   padding: 8px 16px; /* Example padding, adjust as needed */
-  background-color: #f0f0f0; /* Example background color, adjust as needed */
+  background-color: #b1f3c9; /* Example background color, adjust as needed */
   border: none; /* Removes border */
   cursor: pointer; /* Changes cursor to pointer on hover */
   border-radius: 5px; /* Rounds the corners of the button */

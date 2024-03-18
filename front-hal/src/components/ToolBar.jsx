@@ -64,7 +64,7 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
                 </div>
             </div>
             {/* Button to open modal now sits outside the .toolbar-left but inside .toolbar */}
-            <button onClick={handleOpenModal} className="add-person-button">+ Add Person</button>
+            <button onClick={handleOpenModal} className="add-person-button">+ Add</button>
 
             {/* Modal for adding a new person */}
             <Modal show={showModal} onClose={handleCloseModal}>
