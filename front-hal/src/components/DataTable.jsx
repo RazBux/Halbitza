@@ -57,7 +57,7 @@ const DataTable = ({ tableName, columnName, backendURL }) => {
             <div>
                 <br />
                 <hr/>
-                <h3>{tableName.toUpperCase()} DATA:</h3>
+                <h3>{tableName.toUpperCase()}:</h3>
             </div>
             <div className="table-container">
                 <table {...getTableProps()} calssName="no-select">
