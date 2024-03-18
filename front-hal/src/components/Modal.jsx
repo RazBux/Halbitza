@@ -1,20 +1,36 @@
 import React from 'react';
 import "../App.css";
 
-
+/*
+Modal used for showing child component that send to him, mainly it's a form - add/delete 
+while the rest of the app is unavilable. 
+*/
 const Modal = ({ show, children, onClose }) => {
   if (!show) {
     return null;
   }
 
   return (
+    ///////without scrollable container //////
+    ///////that hold the X button allways in the /////
+
+    // <div className="modal-backdrop">
+    //   <div className="modal-content">
+    //     <button onClick={onClose} className="modal-close-button">X</button>
+    //     {children}
+    //   </div>
+    // </div>
+
+    //with css that holds the X button on top 
     <div className="modal-backdrop">
       <div className="modal-content">
         <button onClick={onClose} className="modal-close-button">X</button>
-        {children}
+        <div className="modal-scroll-container">
+          {children} {/* Your scrollable content goes here */}
+        </div>
       </div>
     </div>
-  );
+    );
 };
 
 export default Modal;

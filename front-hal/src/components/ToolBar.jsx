@@ -50,26 +50,6 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     };
 
     return (
-        // <div classnName="toolbar">
-        //     <div className="market">Halbitza-pro</div>
-        //     <div className="search-container">
-        //         <Select
-        //             options={options}
-        //             onChange={handleChange}
-        //             value={options.find(option => option.value === selectedTable)}
-        //             placeholder="Search Table…"
-        //             styles={customStyles}
-        //         />
-        //     </div>
-        //     {/* Button to open modal */}
-        //     <button onClick={handleOpenModal} className="add-person-button">+ Add Person</button>
-
-        //     {/* Modal for adding a new person */}
-        //     <Modal show={showModal} onClose={handleCloseModal}>
-        //         <AddPersonForm backendURL={backendURL} closeModal={handleCloseModal} />
-        //     </Modal>
-        // </div>
-
         <div className="toolbar">
             <div className="toolbar-left">
                 <div className="market">Halbitza-pro</div>
@@ -88,8 +68,12 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
 
             {/* Modal for adding a new person */}
             <Modal show={showModal} onClose={handleCloseModal}>
-                <AddPersonForm backendURL={backendURL} closeModal={handleCloseModal} />
-            </Modal>
+                <AddPersonForm backendURL={backendURL} tableName={selectedTable} />
+                {/* add here delete person */}
+                   
+            </Modal> 
+            
+
         </div>
 
 

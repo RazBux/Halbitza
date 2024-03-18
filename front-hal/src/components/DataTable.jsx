@@ -60,7 +60,7 @@ const DataTable = ({ tableName, columnName, backendURL }) => {
                 <h3>{tableName.toUpperCase()}:</h3>
             </div>
             <div className="table-container">
-                <table {...getTableProps()} calssName="no-select">
+                <table {...getTableProps()} className="no-select">
                     <thead>
                         {headerGroups.map(headerGroup => (
                             <tr {...headerGroup.getHeaderGroupProps()}>
