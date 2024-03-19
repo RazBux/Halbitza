@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CategoryMenu from './CategoryMenu';
 import ToolBar from './ToolBar';
 import DataTable from './DataTable';
+import SearchComponent from './SearchComponent';
 
 function QueryData({ backendURL }) { // Ensure backendURL is received as prop
   const [selectedTable, setSelectedTable] = useState('all_data');

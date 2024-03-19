@@ -241,10 +241,22 @@ hr {
   margin-left: auto; /* This pushes the button to the right */
   padding: 8px 16px; /* Example padding, adjust as needed */
   background-color: #b1f3c9; /* Example background color, adjust as needed */
-  border: none; /* Removes border */
+  border: firebrick; /* Removes border */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border-radius: 5px; /* Rounds the corners of the button */
+  
+}
+
+.search-person-button {
+  /* margin-left: auto; This pushes the button to the right */
+  margin-left: 8px;
+  padding: 8px 16px; /* Example padding, adjust as needed */
+  background-color: #53dbe2; /* Example background color, adjust as needed */
+  border: firebrick; /* Removes border */
   cursor: pointer; /* Changes cursor to pointer on hover */
   border-radius: 5px; /* Rounds the corners of the button */
 }
+
 
 /*make 2 fields in 1 row*/
 .add-person-form {

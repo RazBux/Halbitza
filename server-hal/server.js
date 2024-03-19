@@ -12,6 +12,7 @@ const {
   getDataByQuery,
   create_sql_query,
   insertIntoTable,
+  searchPeopleById
 } = require('./models/sqlQuery');
 
 app.use(cors());
@@ -40,6 +41,23 @@ app.get('/api/table/:table_name', async (req, res) => {
     res.status(500).send(error.toString());
   }
 });
+
+//
+// Endpoint to get all info by searching people with id
+// Using the uri of: http://localhost:8000/api/search/:tableName/:id
+app.get('/api/search/:tableName/:id', async (req, res) => {
+  try {
+    const { tableName, id } = req.params;
+    console.log(id);
+    const data = await searchPeopleById(tableName, id + '%'); // Add '%' for the LIKE pattern
+    console.log(data);
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send(error.toString());
+  }
+});
+//
 
 // Endpoint to get data from a specific query (for simplicity, using a GET request here,
 // but consider POST for actual use to avoid security issues)

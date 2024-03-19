@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import AddPersonForm from './AddPerson';
+import SearchPersonForm from './SearchComponent';
 import Modal from './Modal';
 import "../App.css";
 
@@ -9,6 +10,7 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
+    const [showSearchModal, setShowSearchModal] = useState(false); // State to control search person modal visibility
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -37,6 +39,9 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
 
+    const handleOpenSearchModal = () => setShowSearchModal(true);
+    const handleCloseSearchModal = () => setShowSearchModal(false);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
@@ -64,14 +69,18 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
                 </div>
             </div>
             {/* Button to open modal now sits outside the .toolbar-left but inside .toolbar */}
-            <button onClick={handleOpenModal} className="add-person-button">+ Add</button>
+            <button onClick={handleOpenModal} className="add-person-button">＋ Add</button>
+            <button onClick={handleOpenSearchModal} className="search-person-button">🔍 Search</button>
 
             {/* Modal for adding a new person */}
             <Modal show={showModal} onClose={handleCloseModal}>
                 <AddPersonForm backendURL={backendURL} tableName={selectedTable} />
-                {/* add here delete person */}
-                   
-            </Modal> 
+            </Modal>
+
+            {/* Modal for searching a person */}
+            <Modal show={showSearchModal} onClose={handleCloseSearchModal}>
+                <SearchPersonForm backendURL={backendURL} tableName={selectedTable} />
+            </Modal>
             
 
         </div>

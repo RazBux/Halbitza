@@ -84,36 +84,53 @@ function getDataByQuery(sqlQuery) {
 }
 
 function create_sql_query({ tableName, columnList }) {
-    let columns = "*"; // Default to all columns if none are specified
-  
-    // If columnList is provided and is not empty, join the list into a string
-    if (Array.isArray(columnList) && columnList.length > 0) {
-      columns = columnList.join(', ');
-    }
-  
-    // Construct the SQL query string
-    const query = `SELECT ${columns} FROM ${tableName};`;
-  
-    // Execute the query and return the results
-    return getDataByQuery(query);
+  let columns = "*"; // Default to all columns if none are specified
+
+  // If columnList is provided and is not empty, join the list into a string
+  if (Array.isArray(columnList) && columnList.length > 0) {
+    columns = columnList.join(', ');
   }
+
+  // Construct the SQL query string
+  const query = `SELECT ${columns} FROM ${tableName};`;
+
+  // Execute the query and return the results
+  return getDataByQuery(query);
+}
 
 //insert values to the dataBase, this function if for the post request
 function insertIntoTable(tableName, data) {
   return new Promise((resolve, reject) => {
-      const columns = Object.keys(data).join(', ');
-      const placeholders = Object.keys(data).map(() => '?').join(', ');
-      const values = Object.values(data);
+    const columns = Object.keys(data).join(', ');
+    const placeholders = Object.keys(data).map(() => '?').join(', ');
+    const values = Object.values(data);
 
-      const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`;
+    const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders})`;
 
-      db.run(query, values, function(err) {
-          if (err) {
-              reject(err);
-          } else {
-              resolve({ id: this.lastID });
-          }
-      });
+    db.run(query, values, function (err) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ id: this.lastID });
+      }
+    });
+  });
+}
+
+
+//search people by id in the dataBase
+function searchPeopleById(tableName, pattern) {
+  return new Promise((resolve, reject) => {
+    // Ensure tableName is safe to prevent SQL injection
+    const sqlQuery = `SELECT * FROM ${tableName} WHERE id LIKE ?;`;
+
+    db.all(sqlQuery, [pattern], (err, rows) => { // Use parameterized query for 'pattern'
+      if (err) {
+        reject(err);
+        return;
+      }
+      resolve(rows);
+    });
   });
 }
 
@@ -126,6 +143,7 @@ module.exports = {
   getAllTableNames,
   getDataByQuery,
   create_sql_query,
-  insertIntoTable
+  insertIntoTable,
+  searchPeopleById
 };
 
