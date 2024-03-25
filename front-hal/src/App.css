@@ -11,6 +11,12 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+  .sidebar {
+    display: none;
+  }
+  .main-content {
+    margin: 0;
+  }
 }
 
 .App-header {
