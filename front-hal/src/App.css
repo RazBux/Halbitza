@@ -245,7 +245,7 @@ hr {
 /* Add styles for the add-person-button for consistency and positioning */
 .add-person-button {
   margin-left: auto; /* This pushes the button to the right */
-  padding: 8px 16px; /* Example padding, adjust as needed */
+  padding: 9px 16px; /* Example padding, adjust as needed */
   background-color: #b1f3c9; /* Example background color, adjust as needed */
   border: firebrick; /* Removes border */
   cursor: pointer; /* Changes cursor to pointer on hover */
@@ -256,12 +256,23 @@ hr {
 .search-person-button {
   /* margin-left: auto; This pushes the button to the right */
   margin-left: 8px;
-  padding: 8px 16px; /* Example padding, adjust as needed */
+  padding: 7px 16px; /* Example padding, adjust as needed */
   background-color: #53dbe2; /* Example background color, adjust as needed */
   border: firebrick; /* Removes border */
   cursor: pointer; /* Changes cursor to pointer on hover */
   border-radius: 5px; /* Rounds the corners of the button */
 }
+
+.gard-button {
+  /* margin-left: auto; This pushes the button to the right */
+  margin-left: 8px;
+  padding: 10px 16px; /* Example padding, adjust as needed */
+  background-color: #e6cc24; /* Example background color, adjust as needed */
+  border: firebrick; /* Removes border */
+  cursor: pointer; /* Changes cursor to pointer on hover */
+  border-radius: 5px; /* Rounds the corners of the button */
+}
+
 
 
 /*make 2 fields in 1 row*/

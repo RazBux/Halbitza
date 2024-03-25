@@ -3,6 +3,7 @@ import Select from 'react-select';
 import AddPersonForm from './AddPerson';
 import SearchPersonForm from './SearchComponent';
 import Modal from './Modal';
+import { useNavigate } from 'react-router-dom';
 import "../App.css";
 
 const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
@@ -31,6 +32,12 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
 
         fetchTables();
     }, [backendURL]);
+
+    const navigate = useNavigate();
+
+    const handleExploreClick = () => {
+        navigate('/grad'); // Use navigate instead of history.push
+    };
 
     const handleChange = (selectedOption) => {
         updateSelectedTable(selectedOption.value);
@@ -70,7 +77,9 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
             </div>
             {/* Button to open modal now sits outside the .toolbar-left but inside .toolbar */}
             <button onClick={handleOpenModal} className="add-person-button">＋ Add</button>
+            <button onClick={handleExploreClick} className="gard-button"> Grad</button>
             <button onClick={handleOpenSearchModal} className="search-person-button">🔍 Search</button>
+
 
             {/* Modal for adding a new person */}
             <Modal show={showModal} onClose={handleCloseModal}>
@@ -81,7 +90,7 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
             <Modal show={showSearchModal} onClose={handleCloseSearchModal}>
                 <SearchPersonForm backendURL={backendURL} tableName={selectedTable} />
             </Modal>
-            
+
 
         </div>
 
