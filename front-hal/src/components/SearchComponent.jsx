@@ -72,7 +72,7 @@ const SearchPersonForm = ({ backendURL, tableName }) => {
     const getRowStyle = (idColor) => {
         switch (idColor) {
             case 'כחולה':
-                return { backgroundColor: 'blue', color: 'white' };
+                return { backgroundColor: 'green', color: 'white' };
             case 'ירוקה':
                 return { backgroundColor: 'red', color: 'white' };
             default:

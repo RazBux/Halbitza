@@ -72,7 +72,15 @@ function getDataByQuery(sqlQuery) {
         reject(err);
         return;
       }
-      const data = rows.map(row => ({ ...row }));
+      // const data = rows.map(row => ({ ...row })); //old version 
+      
+      //return the column of id, id_color, boss at first
+      const data = rows.map(row => {
+        const {id, id_color, boss, ...otherColumns} = row;
+        // Reconstruct the row with id, id_color, and boss at the beginning
+        return {id, id_color, boss, ...otherColumns};
+      });
+
       // console.log(`Run query: ${sqlQuery}`);
       // console.log(rows);
       console.log(`resolve data:`);
@@ -129,7 +137,16 @@ function searchPeopleById(tableName, pattern) {
         reject(err);
         return;
       }
-      resolve(rows);
+
+      //return the id, id_color and boss and the begining....
+      const data = rows.map(row => {
+        const {id, id_color, boss, ...otherColumns} = row;
+        // Reconstruct the row with id, id_color, and boss at the beginning
+        return {id, id_color, boss, ...otherColumns};
+      });
+
+
+      resolve(data);
     });
   });
 }

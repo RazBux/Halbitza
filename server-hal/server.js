@@ -57,7 +57,7 @@ app.get('/api/search/:tableName/:id', async (req, res) => {
     res.status(500).send(error.toString());
   }
 });
-//
+
 
 // Endpoint to get data from a specific query (for simplicity, using a GET request here,
 // but consider POST for actual use to avoid security issues)
