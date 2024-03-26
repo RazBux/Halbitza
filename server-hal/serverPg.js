@@ -4,7 +4,6 @@ const app = express();
 const port = 8000;
 const cors = require('cors');
 
-// Assuming your functions are in a file named 'dbHelpers.js'
 const {
   getTableColumns,
   getAllTableAndThierColumns,
@@ -13,12 +12,12 @@ const {
   create_sql_query,
   insertIntoTable,
   searchPeopleById
-} = require('./models/sqlQuery');
+} = require('./models/sqlQueryPg');
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// Endpoint to get all table names
+// Endpoint to get all table names 
 app.get('/api/tables', async (req, res) => {
   try {
     const tableNames = await getAllTableNames();
@@ -42,7 +41,7 @@ app.get('/api/table/:table_name', async (req, res) => {
   }
 });
 
-//
+
 // Endpoint to get all info by searching people with id
 // Using the uri of: http://localhost:8000/api/search/:tableName/:id
 app.get('/api/search/:tableName/:id', async (req, res) => {
@@ -131,3 +130,5 @@ app.post('/api/data', async (req, res) => {
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+
