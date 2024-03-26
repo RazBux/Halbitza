@@ -6,7 +6,6 @@ const cors = require('cors');
 
 const {
   getTableColumns,
-  getAllTableAndThierColumns,
   getAllTableNames,
   getDataByQuery,
   create_sql_query,

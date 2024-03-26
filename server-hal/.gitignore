@@ -1,1 +1,4 @@
 /models/config.js
+/db/*
+/db*
+*.sqlite

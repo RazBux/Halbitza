@@ -74,24 +74,6 @@ async function insertIntoTable(tableName, data) {
     }
 }
 
-// Note: The usage of PRAGMA and sqlite_master is specific to SQLite.
-// PostgreSQL uses information_schema or pg_catalog for metadata.
-// The following function is adjusted to use information_schema for compatibility.
-async function getAllTableAndTheirColumns() {
-    try {
-        const tables = await getAllTableNames();
-        const result = {};
-        for (const tableName of tables) {
-            const columns = await getTableColumns({ tableName });
-            result[tableName] = columns;
-        }
-        return result;
-    } catch (err) {
-        console.error(err);
-        throw err;
-    }
-}
-
 // Search people by ID in the database
 async function searchPeopleById(tableName, pattern) {
     // Construct the SQL query using PostgreSQL's parameter placeholder style
@@ -132,7 +114,6 @@ async function create_sql_query({ tableName, columnList }) {
 
 module.exports = {
     getTableColumns,
-    getAllTableAndTheirColumns,
     getAllTableNames,
     getDataByQuery,
     insertIntoTable,
