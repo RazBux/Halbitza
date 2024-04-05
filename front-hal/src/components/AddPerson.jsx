@@ -14,11 +14,13 @@ const AddPersonForm = ({ tableName, backendURL }) => {
                 const response = await fetch(query);
                 if (!response.ok) throw new Error('Failed to fetch table schema');
                 const schemaData = await response.json();
+                console.log(schemaData)
                 setSchema(schemaData);
                 const initialFormData = {};
                 schemaData.forEach(column => {
                     initialFormData[column] = '';
                 });
+                console.log(initialFormData)
                 setFormData(initialFormData);
             } catch (error) {
                 setError(`Error fetching schema: ${error.message}`);
@@ -45,8 +47,8 @@ const AddPersonForm = ({ tableName, backendURL }) => {
             tableName, // Assuming tableName is a prop or state variable available in this scope
             data: formData // formData should hold the form values collected from user input
         };
-        
-        console.log(tableName,  formData);
+
+        console.log(tableName, formData);
 
         try {
             const response = await fetch(`${backendURL}/data`, {
@@ -56,7 +58,7 @@ const AddPersonForm = ({ tableName, backendURL }) => {
                 },
                 body: JSON.stringify(payload) // Correctly pass payload as the request body
             });
-            
+
 
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
@@ -78,22 +80,25 @@ const AddPersonForm = ({ tableName, backendURL }) => {
 
     return (
         <form onSubmit={handleSubmit} className="add-person-form">
-            {schema.map(column => (
-                <div className="form-group" key={column}>
-                    <label>{column.charAt(0).toUpperCase() + column.slice(1)}{column === "id" ? "*" : ""}</label>
-                    <input
-                        type="text"
-                        name={column}
-                        value={formData[column] || ''}
-                        onChange={handleChange}
-                        required={column === "id"}
-                    />
-                </div>
-            ))}
-            <div className="form-buttons">
-                <button type="submit" className="button submit-button">Submit</button>
+        {schema.map(column => (
+            <div className="form-group" key={column}>
+                <label>
+                    {column.column_name.charAt(0).toUpperCase() + column.column_name.slice(1)}
+                    {column.column_name === "id" ? "*" : ""}
+                </label>                  
+                <input
+                    type="text"
+                    name={column.column_name}
+                    value={formData[column.column_name] || ''}
+                    onChange={handleChange}
+                    required={column.column_name === "id"}
+                />
             </div>
-        </form>
+        ))}
+        <div className="form-buttons">
+            <button type="submit" className="button submit-button">Submit</button>
+        </div>
+    </form>
     );
 };
 

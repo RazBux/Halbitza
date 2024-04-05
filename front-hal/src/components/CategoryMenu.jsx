@@ -18,12 +18,11 @@ const CategoryMenu = ({ selectedTable, updateCategories, backendURL }) => {
         if (!response.ok) throw new Error('Network response was not ok');
         const columnsArray = await response.json(); // This is directly the array of column names
         const formattedOptions = columnsArray
-          .filter(category => category !== 'quarter') // Assuming you still want to exclude 'quarter'
-          .map(category => ({
-            label: category,
-            value: category,
-          }));
-        setOptions(formattedOptions);
+        .map(obj => ({
+          label: obj.column_name, // Adjusted to use column_name property
+          value: obj.column_name, // Adjusted to use column_name property
+        }));
+      setOptions(formattedOptions);
       } catch (error) {
         setError(error);
       } finally {

@@ -1,3 +1,4 @@
+import { IoMdPersonAdd } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import AddPersonForm from './AddPerson';
@@ -5,6 +6,7 @@ import SearchPersonForm from './SearchComponent';
 import Modal from './Modal';
 import { useNavigate } from 'react-router-dom';
 import "../App.css";
+import { IconBase } from "react-icons";
 
 const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     const [tables, setTables] = useState([]);
@@ -12,6 +14,8 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const [showSearchModal, setShowSearchModal] = useState(false); // State to control search person modal visibility
+
+
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -36,7 +40,7 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     const navigate = useNavigate();
 
     const handleExploreClick = () => {
-        navigate('/grad'); // Use navigate instead of history.push
+        navigate('/gurad'); // Use navigate instead of history.push
     };
 
     const handleChange = (selectedOption) => {
@@ -52,7 +56,11 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
 
-    const options = tables.map(table => ({ value: table, label: table }));
+    // const options = tables.map(table => ({ value: table, label: table }));
+    const options = tables.map(table => ({
+        value: table.table_name, // Assuming 'table_name' is the unique identifier for the table
+        label: table.table_name // This should be the string you want displayed
+    }));
 
     const customStyles = {
         multiValue: (styles) => ({
@@ -76,9 +84,15 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
                 </div>
             </div>
             {/* Button to open modal now sits outside the .toolbar-left but inside .toolbar */}
-            <button onClick={handleOpenModal} className="add-person-button">＋ Add</button>
-            <button onClick={handleExploreClick} className="gard-button"> Grad</button>
-            <button onClick={handleOpenSearchModal} className="search-person-button">🔍 Search</button>
+            {/* <button onClick={handleOpenModal} className="add-person-button">＋ Add</button> */}
+            <button onClick={handleOpenModal} className="add-person-button">
+                <IoMdPersonAdd size={25} />
+            </button>
+            <button onClick={handleExploreClick} className="gard-button"> Gurad</button>
+            {/* <button onClick={handleOpenSearchModal} className="search-person-button">🔍 Search</button> */}
+            {/* <button onClick={handleOpenSearchModal} className="search-person-button">🔍</button> */}
+            {/* <button onClick={handleOpenSearchModal} className="search-person-button text-xl">🔍</button> */}
+            <button onClick={handleOpenSearchModal} className="search-person-button text-4xl p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">🕵️‍♂️</button>
 
 
             {/* Modal for adding a new person */}

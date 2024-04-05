@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon serverPg.js"
+    "start": "nodemon serverSqlS.js"
   },
   "keywords": [],
   "author": "",
@@ -13,6 +13,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.18.3",
+    "mssql": "^10.0.2",
     "nodemon": "^3.1.0",
     "pg": "^8.11.3",
     "sqlite3": "^5.1.7"

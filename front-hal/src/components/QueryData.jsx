@@ -5,7 +5,7 @@ import DataTable from './DataTable';
 import SearchComponent from './SearchComponent';
 
 function QueryData({ backendURL }) { // Ensure backendURL is received as prop
-  const [selectedTable, setSelectedTable] = useState('all_data');
+  const [selectedTable, setSelectedTable] = useState('persons');
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
