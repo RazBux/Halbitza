@@ -64,24 +64,53 @@ async function createSqlQuery({ tableName, columnList }) {
 
 async function insertIntoTable(tableName, data) {
     try {
-        await sql.connect(connectionString);
-        const columns = Object.keys(data).join(', ');
-        const placeholders = Object.keys(data).map((_, index) => `@param${index}`).join(', ');
-        const request = new sql.Request();
-        Object.keys(data).forEach((key, index) => request.input(`param${index}`, data[key]));
+        // Filter out keys with null or empty string values, but always include 'id'
+        const filteredData = Object.keys(data).reduce((acc, key) => {
+            if (key === 'id' || (data[key] !== '' && data[key] != null)) {
+                acc[key] = data[key];
+            }
+            return acc;
+        }, {});
 
-        const query = `INSERT INTO ${tableName} (${columns}) OUTPUT INSERTED.ID VALUES (${placeholders});`;
+        console.log(`table name: ${tableName}`);
+        console.log('Filtered data:', filteredData);
+
+        await sql.connect(connectionString);
+        const columns = Object.keys(filteredData).join(', ');
+        console.log("columns", columns);
+
+        const placeholders = Object.keys(filteredData).map((_, index) => `@param${index}`).join(', ');
+        const request = new sql.Request();
+        // Object.keys(filteredData).forEach((key, index) => {
+        //     // Determine the type based on the actual value or default to VarChar
+        //     const type = sql.VarChar; // This is a simplification, adjust as necessary based on actual types
+        //     request.input(`param${index}`, type, filteredData[key]);
+        // });
+        
+        Object.keys(filteredData).forEach((key, index) => {
+            const type = key === 'family_he' || key === 'name_he' ? sql.NVarChar : sql.VarChar;
+            request.input(`param${index}`, type, filteredData[key]);
+        });
+
+        const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders});`;
+        console.log('insert query:', query);
+        
         const result = await request.query(query);
-        console.log(`Inserted ID:`, result.recordset[0].ID);
-        return { id: result.recordset[0].ID };
+        console.log(`Record inserted into ${result}.`);
+
+        // If you need the last inserted ID, consider using a separate query with SCOPE_IDENTITY(), as direct output might be problematic with triggers.
+        // Example: const idResult = await request.query("SELECT SCOPE_IDENTITY() AS LastID;");
+        // console.log(`Inserted ID:`, idResult.recordset[0].LastID);
+
+        // Since OUTPUT is removed, adjust your logic for obtaining the last inserted ID if needed
+        // Returning a placeholder value or fetching the ID with a separate query if necessary
+        return { id: "Placeholder or fetch actual ID" };
     } catch (err) {
-        console.error(err);
+        console.error('Error during insertion:', err);
         throw err;
-    } 
-    // finally {
-    //     sql.close();
-    // }
+    }
 }
+
 
 // Search people by ID in the database
 // http://localhost:8000/api/search/persons/85

@@ -43,75 +43,60 @@ app.get(`${apiV}/table/:table_name`, async (req, res) => {
 // Endpoint to get data from a specific query (for simplicity, using a GET request here,
 // but consider POST for actual use to avoid security issues)
 app.get(`${apiV}/query`, async (req, res) => {
-    try {
-      const sqlQuery = req.query.sqlQuery;
-      const data = await getDataByQuery(sqlQuery);
-      res.json(data);
-    } catch (error) {
-      res.status(500).send(error.toString());
-    }
-  });
-  
-  
-  // Getting all the we want by passing TableName & wanted column. 
-  // if no column passed. it will automaticly send all the data avilable. 
-  // ex. uri: http://localhost:8000/api/data?tableName=persons&columns=name_he,name_en,id,age
-  // ITF - create a function to check the names of the column if they are valid. if not - remove them and print an error.
-  app.get(`${apiV}/data`, async (req, res) => {
-      const tableName = req.query.tableName;
-      const columnList = req.query.columns ? req.query.columns.split(',') : undefined;
-    
-      // Ensure tableName is provided
-      if (!tableName) {
-        return res.status(400).send('Table name is required.');
-      }
-    
-      try {
-        const data = await createSqlQuery({ tableName, columnList });
-        res.json(data);
-      } catch (error) {
-        res.status(500).send(error.toString());
-      }
-    });
-    
-
-  // POST endpoint to insert data into a table
-  app.post(`${apiV}/data`, async (req, res) => {
-    const { tableName, data } = req.body;
-    console.log('Received data:', tableName, data); // Log incoming data
-  
-    if (!tableName || !data) {
-      return res.status(400).send('Table name and data are required.');
-    }
-  
-    try {
-      const result = await insertIntoTable(tableName, data);
-      console.log('Insert result:', result); // Log success result
-      res.status(201).send(result);
-    } catch (error) {
-      console.error('Insertion error:', error); // Log any error that occurs
-      res.status(500).send(error.message);
-    }
-  });
-  
-  
-  // app.post('/api/data', async (req, res) => {
-  //   const { tableName, data } = req.body;
-  
-  //   if (!tableName || !data) {
-  //     return res.status(400).send('Table name and data are required.');
-  //   }
-  
-  //   try {
-  //     const result = await insertIntoTable({ tableName, data });
-  //     res.status(201).send(result); // 201 Created
-  //   } catch (error) {
-  //     res.status(500).send(error.message);
-  //   }
-  // });
+  try {
+    const sqlQuery = req.query.sqlQuery;
+    const data = await getDataByQuery(sqlQuery);
+    res.json(data);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
 
 
-  // Endpoint to get all info by searching people with id
+// Getting all the we want by passing TableName & wanted column. 
+// if no column passed. it will automaticly send all the data avilable. 
+// ex. uri: http://localhost:8000/api/v1/data?tableName=persons&columns=name_he,name_en,id,age
+// ITF - create a function to check the names of the column if they are valid. if not - remove them and print an error.
+app.get(`${apiV}/data`, async (req, res) => {
+  const tableName = req.query.tableName;
+  const columnList = req.query.columns ? req.query.columns.split(',') : undefined;
+
+  // Ensure tableName is provided
+  if (!tableName) {
+    return res.status(400).send('Table name is required.');
+  }
+
+  try {
+    const data = await createSqlQuery({ tableName, columnList });
+    res.json(data);
+  } catch (error) {
+    res.status(500).send(error.toString());
+  }
+});
+
+
+// POST endpoint to insert data into a table
+// http://localhost:8000/api/v1/data?tableName=persons&columns=name_he,name_en,id,age
+app.post(`${apiV}/data`, async (req, res) => {
+  const { tableName, data } = req.body;
+  console.log('Received data:', tableName, data); // Log incoming data
+
+  if (!tableName || !data) {
+    return res.status(400).send('Table name and data are required.');
+  }
+
+  try {
+    const result = await insertIntoTable(tableName, data);
+    console.log('Insert result:', result); // Log success result
+    res.status(201).send(result);
+  } catch (error) {
+    console.error('Insertion error:', error); // Log any error that occurs
+    res.status(500).send(error.message);
+  }
+});
+
+
+// Endpoint to get all info by searching people with id
 // Using the uri of: http://localhost:8000/api/search/:tableName/:id
 app.get(`${apiV}/search/:tableName/:id`, async (req, res) => {
   try {
@@ -126,8 +111,7 @@ app.get(`${apiV}/search/:tableName/:id`, async (req, res) => {
   }
 });
 
-  app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
-  });
-  
-  
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
+
