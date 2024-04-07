@@ -11,9 +11,6 @@ async function getTableColumns(tableName) {
         console.error(err);
         throw err;
     } 
-    // finally {
-    //     sql.close();
-    // }
 }
 
 async function getAllTableNames() {
@@ -27,9 +24,6 @@ async function getAllTableNames() {
         console.error(err);
         throw err;
     }
-    // } finally {
-    //     sql.close();
-    // }
 }
 
 async function getDataByQuery(sqlQuery) {
@@ -42,9 +36,6 @@ async function getDataByQuery(sqlQuery) {
         console.error(err);
         throw err;
     }
-    // finally {
-    //     sql.close();
-    // }
 }
 
 async function createSqlQuery({ tableName, columnList }) {
@@ -81,11 +72,6 @@ async function insertIntoTable(tableName, data) {
 
         const placeholders = Object.keys(filteredData).map((_, index) => `@param${index}`).join(', ');
         const request = new sql.Request();
-        // Object.keys(filteredData).forEach((key, index) => {
-        //     // Determine the type based on the actual value or default to VarChar
-        //     const type = sql.VarChar; // This is a simplification, adjust as necessary based on actual types
-        //     request.input(`param${index}`, type, filteredData[key]);
-        // });
         
         Object.keys(filteredData).forEach((key, index) => {
             const type = key === 'family_he' || key === 'name_he' ? sql.NVarChar : sql.VarChar;

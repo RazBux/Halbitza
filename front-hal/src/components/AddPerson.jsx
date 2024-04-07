@@ -16,13 +16,7 @@ const AddPersonForm = ({ tableName, backendURL }) => {
                 console.log("schemaData:",schemaData);
 
                 const initialFormData = schemaData.reduce((acc, column) => {
-                    console.log("Processing column:", column.column_name); // Debug log
-                    if (!column.column_name.includes('_id')) {
-                        console.log("Adding column:", column.column_name); // Debug log
-                        acc[column.column_name] = '';
-                    } else {
-                        console.log("Excluding column:", column.column_name); // Debug log
-                    }
+                    acc[column.column_name] = '';
                     return acc;
                 }, {});
                 setFormData(initialFormData);
@@ -80,9 +74,16 @@ const AddPersonForm = ({ tableName, backendURL }) => {
     if (loading) return <p>Loading schema...</p>;
     if (error) return <p>Error: {error}</p>;
 
+    const excludedSubstrings = ['_id', '_ar', '_en', '_group', 'age'];
+
     return (
         <form onSubmit={handleSubmit} className="add-person-form">
-            {schema.map(column => (
+            {schema
+                // .filter(column => !column.column_name.includes('_id'))
+                .filter(column =>
+                    !excludedSubstrings.some(substring => column.column_name.includes(substring))
+                )               
+                .map(column => (
                 <div className="form-group" key={column.column_name}>
                     <label>
                         {column.column_name.charAt(0).toUpperCase() + column.column_name.slice(1)}
