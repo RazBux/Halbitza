@@ -54,9 +54,11 @@ const CategoryMenu = ({ selectedTable, updateCategories, backendURL }) => {
   return (
     // The rest of your component rendering code, including Select component and button
     <div>
-      <h2>Categories</h2>
+      <br/>
+      {/* <h2>Categories</h2> */}
       <Select
         isMulti
+        placeholder="Select categories..."
         options={options}
         value={selectedOptions}
         onChange={handleCategoryChange}

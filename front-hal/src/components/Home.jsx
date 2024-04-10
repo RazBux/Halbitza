@@ -7,7 +7,7 @@ const Home = () => {
 
     const handleExploreClick = () => {
         if (password === '1981') {
-            navigate('/grad'); // Use navigate instead of history.push
+            navigate('/query-data'); // Use navigate instead of history.push
         } else {
             alert('Incorrect password');
         }
@@ -15,6 +15,8 @@ const Home = () => {
 
     return (
         <div>
+            <div className="bg-green-500 text-white p-4">Hello, Tailwind!</div>
+            <br/>
             <div>
                 <text>Welcome to Halbitza pro!</text>
             </div>

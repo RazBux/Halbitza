@@ -88,6 +88,8 @@ const AddPersonForm = ({ tableName, backendURL }) => {
                     <label>
                         {column.column_name.charAt(0).toUpperCase() + column.column_name.slice(1)}
                         {column.column_name === "id" ? "*" : ""}
+                        {column.column_name === "family_name" ? "*" : ""}
+                        {column.column_name === "id" ? "*" : ""}
                     </label>
                     <input
                         type="text"

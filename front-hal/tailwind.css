@@ -11,9 +11,11 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+
   .sidebar {
     display: none;
   }
+
   .main-content {
     margin: 0;
   }
@@ -49,6 +51,7 @@
 }
 
 /*Centered the Market-pro app*/
+
 .centered-container {
   width: 100%;
   /* Or the width you desire */
@@ -56,13 +59,12 @@
   /* Maximum width of the container */
   margin: auto;
   padding: 10px;
-
   /* This should be the background color of your container */
   background-color: rgb(247, 249, 246)
 }
 
-
 /*submit button */
+
 .custom-button {
   background-color: rgb(220, 227, 240);
   /* Set the background color to white */
@@ -82,21 +84,37 @@
 }
 
 /* Submit botton for the search categories*/
+
 .custom-button:hover {
   background-color: #98daee;
   color: rgb(94, 89, 89);
   /* Change text color on hover */
 }
 
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* This will push the children to the edges */
+  background-color: #3e659d;
+  color: rgb(43, 42, 42);
+  padding: 10px;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+}
+
 .menu-button {
   margin-right: 20px;
 }
 
-/* .search-container {
+.search-container {
   position: relative;
   flex-grow: 1;
   max-width: 250px;
-} */
+}
 
 .search-container input {
   width: 100%;
@@ -136,6 +154,7 @@
 }
 
 /* Table style */
+
 .table-container {
   width: 100%;
   /* Container takes the full width of the parent */
@@ -155,7 +174,9 @@ table {
 }
 
 /* table style */
+
 /*react-table column*/
+
 th {
   padding: 8px;
   text-align: left;
@@ -165,6 +186,7 @@ th {
 }
 
 /*react-table cell*/
+
 td {
   padding: 8px;
   /* Padding for table cells */
@@ -175,6 +197,7 @@ td {
 }
 
 /*hr style*/
+
 hr {
   width: 70%;
   /* Set the width of the HR to 80% of its parent */
@@ -193,14 +216,14 @@ hr {
 .no-select {
   -webkit-user-select: none;
   /* Safari */
-  -ms-user-select: none;
   /* Internet Explorer/Edge */
   user-select: none;
   /* Non-prefixed version, currently supported by Chrome, Opera, and Firefox */
 }
 
 /* modle css */
- .modal-backdrop {
+
+.modal-backdrop {
   position: fixed;
   top: 0;
   left: 0;
@@ -229,42 +252,58 @@ hr {
 }
 
 /* Add styles for the add-person-button for consistency and positioning */
+
 .add-person-button {
-  margin-left: auto; /* This pushes the button to the right */
-  padding: 9px 16px; /* Example padding, adjust as needed */
-  background-color: #b1f3c9; /* Example background color, adjust as needed */
-  border: firebrick; /* Removes border */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  border-radius: 5px; /* Rounds the corners of the button */
-  
+  margin-left: auto;
+  /* This pushes the button to the right */
+  padding: 9px 16px;
+  /* Example padding, adjust as needed */
+  background-color: #b1f3c9;
+  /* Example background color, adjust as needed */
+  border: firebrick;
+  /* Removes border */
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+  border-radius: 5px;
+  /* Rounds the corners of the button */
 }
 
 .search-person-button {
   /* margin-left: auto; This pushes the button to the right */
   margin-left: 8px;
-  padding: 7px 16px; /* Example padding, adjust as needed */
-  background-color: #53dbe2; /* Example background color, adjust as needed */
-  border: firebrick; /* Removes border */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  border-radius: 5px; /* Rounds the corners of the button */
+  padding: 7px 16px;
+  /* Example padding, adjust as needed */
+  background-color: #53dbe2;
+  /* Example background color, adjust as needed */
+  border: firebrick;
+  /* Removes border */
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+  border-radius: 5px;
+  /* Rounds the corners of the button */
 }
 
 .gard-button {
   /* margin-left: auto; This pushes the button to the right */
   margin-left: 8px;
-  padding: 10px 16px; /* Example padding, adjust as needed */
-  background-color: #e6cc24; /* Example background color, adjust as needed */
-  border: firebrick; /* Removes border */
-  cursor: pointer; /* Changes cursor to pointer on hover */
-  border-radius: 5px; /* Rounds the corners of the button */
+  padding: 10px 16px;
+  /* Example padding, adjust as needed */
+  background-color: #e6cc24;
+  /* Example background color, adjust as needed */
+  border: firebrick;
+  /* Removes border */
+  cursor: pointer;
+  /* Changes cursor to pointer on hover */
+  border-radius: 5px;
+  /* Rounds the corners of the button */
 }
 
-
-
 /*make 2 fields in 1 row*/
+
 .add-person-form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Default to 2 columns */
+  grid-template-columns: repeat(2, 1fr);
+  /* Default to 2 columns */
   grid-gap: 15px;
   padding: 10px;
 }
@@ -272,7 +311,9 @@ hr {
 /* modal css  */
 
 /* ADD PERSON */
+
 /* Modal backdrop */
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -287,26 +328,33 @@ hr {
 }
 
 /* Modal content */
+
 .modal-content {
   position: relative;
   background-color: white;
   padding: 20px;
   border-radius: 4px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  width: 80%; /* Adjust based on your preference */
-  max-height: 90vh; /* Prevent modal from being taller than the viewport */
-  overflow-y: auto; /* Enable vertical scrolling within the modal */
+  width: 80%;
+  /* Adjust based on your preference */
+  max-height: 90vh;
+  /* Prevent modal from being taller than the viewport */
+  overflow-y: auto;
+  /* Enable vertical scrolling within the modal */
   display: flex;
   /* flex-wrap: wrap;  */
   flex-direction: column;
 }
 
 /* New Scrollable Container inside Modal */
+
 .modal-scroll-container {
   overflow-y: auto;
   display: flex;
-  flex-wrap: wrap; /* Allow form fields to wrap */
-  flex: 1; /* Take up available space */
+  flex-wrap: wrap;
+  /* Allow form fields to wrap */
+  flex: 1;
+  /* Take up available space */
 }
 
 .modal-close-button {
@@ -319,8 +367,10 @@ hr {
 }
 
 /* Form field group */
+
 .form-group {
-  flex: 1 1 200px; /* Each field takes up at least 200px and wraps if necessary */
+  flex: 1 1 200px;
+  /* Each field takes up at least 200px and wraps if necessary */
   margin: 10px;
   display: flex;
   flex-direction: column;
@@ -337,11 +387,15 @@ hr {
 }
 
 /* Styling for the submit and cancel buttons */
+
 .form-buttons {
-  width: 100%; /* Ensure buttons are full width of modal */
+  width: 100%;
+  /* Ensure buttons are full width of modal */
   display: flex;
-  justify-content: space-around; /* Space buttons nicely */
-  padding-top: 20px; /* Add some space above the buttons */
+  justify-content: space-around;
+  /* Space buttons nicely */
+  padding-top: 20px;
+  /* Add some space above the buttons */
 }
 
 .button {

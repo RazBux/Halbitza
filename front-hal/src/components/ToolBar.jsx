@@ -9,8 +9,10 @@ import "../App.css";
 import { IconBase } from "react-icons";
 
 const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
+
     const [tables, setTables] = useState([]);
     const [loading, setLoading] = useState(true);
+
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
     const [showSearchModal, setShowSearchModal] = useState(false); // State to control search person modal visibility
@@ -35,13 +37,7 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
         };
 
         fetchTables();
-    }, [backendURL]);
-
-    const navigate = useNavigate();
-
-    const handleExploreClick = () => {
-        navigate('/gurad'); // Use navigate instead of history.push
-    };
+    }, [backendURL,]);
 
     const handleChange = (selectedOption) => {
         updateSelectedTable(selectedOption.value);
@@ -68,13 +64,12 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
             backgroundColor: 'lightblue',
         }),
     };
-
     return (
-        <div className="toolbar">
-            <div className="toolbar-left">
-                <div className="market">Halbitza-pro</div>
-                <div className="search-container">
-                    <Select
+        <div className="flex items-center justify-between bg-teal-100 text-gray-800 p-2 rounded-xl">
+            <div className="flex items-center">
+                <div className="font-bold text-2xl p-4">Halbitza-pro</div>
+                <div className="p-2 flex-grow">
+                    <Select className="hover:bg-gray-300"
                         options={options}
                         onChange={handleChange}
                         value={options.find(option => option.value === selectedTable)}
@@ -83,33 +78,25 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
                     />
                 </div>
             </div>
-            {/* Button to open modal now sits outside the .toolbar-left but inside .toolbar */}
-            {/* <button onClick={handleOpenModal} className="add-person-button">＋ Add</button> */}
-            <button onClick={handleOpenModal} className="add-person-button">
-                <IoMdPersonAdd size={25} />
-            </button>
-            <button onClick={handleExploreClick} className="gard-button"> Gurad</button>
-            {/* <button onClick={handleOpenSearchModal} className="search-person-button">🔍 Search</button> */}
-            {/* <button onClick={handleOpenSearchModal} className="search-person-button">🔍</button> */}
-            {/* <button onClick={handleOpenSearchModal} className="search-person-button text-xl">🔍</button> */}
-            <button onClick={handleOpenSearchModal} className="search-person-button text-4xl p-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">🕵️‍♂️</button>
+            {/* Buttons wrapper with ml-auto to push to the end */}
+            <div className="flex space-x-2 ml-auto">
+                {/* Your buttons */}
+                <button onClick={handleOpenModal} className="text-4xl p-2 bg-sky-300 hover:bg-sky-400 font-bold py-2 px-4 rounded">
+                    <IoMdPersonAdd size={39} />
+                </button>
+                <button onClick={handleOpenSearchModal} className="text-4xl p-2 bg-blue-300 hover:bg-blue-400 font-bold py-2 px-4 rounded">🔍</button>
+            </div>
 
-
-            {/* Modal for adding a new person */}
+            {/* Modals */}
             <Modal show={showModal} onClose={handleCloseModal}>
                 <AddPersonForm backendURL={backendURL} tableName={selectedTable} />
             </Modal>
-
-            {/* Modal for searching a person */}
             <Modal show={showSearchModal} onClose={handleCloseSearchModal}>
                 <SearchPersonForm backendURL={backendURL} tableName={selectedTable} />
             </Modal>
-
-
         </div>
-
-
     );
+
 };
 
 export default ToolBar;

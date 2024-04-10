@@ -3,11 +3,11 @@ import { useTable } from 'react-table';
 import Modal from './Modal';
 import debounce from 'lodash.debounce'; // Make sure you have lodash installed
 
-const SearchPersonForm = ({ backendURL, tableName }) => {
+const SearchPersonForm = ({ backendURL, tableName, columnName }) => {
     const [searchParams, setSearchParams] = useState({ id: '' });
+    const [searchResults, setSearchResults] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [searchResults, setSearchResults] = useState([]);
     const [selectedPerson, setSelectedPerson] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
 
