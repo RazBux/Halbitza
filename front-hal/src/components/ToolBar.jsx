@@ -2,22 +2,15 @@ import { IoMdPersonAdd } from "react-icons/io";
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
 import AddPersonForm from './AddPerson';
-import SearchPersonForm from './SearchComponent';
 import Modal from './Modal';
-import { useNavigate } from 'react-router-dom';
 import "../App.css";
-import { IconBase } from "react-icons";
 
 const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
-
     const [tables, setTables] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [error, setError] = useState(null);
     const [showModal, setShowModal] = useState(false); // State to control modal visibility
-    const [showSearchModal, setShowSearchModal] = useState(false); // State to control search person modal visibility
-
-
 
     useEffect(() => {
         const fetchTables = async () => {
@@ -45,9 +38,6 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
 
     const handleOpenModal = () => setShowModal(true);
     const handleCloseModal = () => setShowModal(false);
-
-    const handleOpenSearchModal = () => setShowSearchModal(true);
-    const handleCloseSearchModal = () => setShowSearchModal(false);
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error.message}</p>;
@@ -84,15 +74,11 @@ const ToolBar = ({ updateSelectedTable, selectedTable, backendURL }) => {
                 <button onClick={handleOpenModal} className="text-4xl p-2 bg-sky-300 hover:bg-sky-400 font-bold py-2 px-4 rounded">
                     <IoMdPersonAdd size={39} />
                 </button>
-                <button onClick={handleOpenSearchModal} className="text-4xl p-2 bg-blue-300 hover:bg-blue-400 font-bold py-2 px-4 rounded">🔍</button>
             </div>
 
             {/* Modals */}
             <Modal show={showModal} onClose={handleCloseModal}>
                 <AddPersonForm backendURL={backendURL} tableName={selectedTable} />
-            </Modal>
-            <Modal show={showSearchModal} onClose={handleCloseSearchModal}>
-                <SearchPersonForm backendURL={backendURL} tableName={selectedTable} />
             </Modal>
         </div>
     );

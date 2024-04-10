@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import CategoryMenu from './CategoryMenu';
 import ToolBar from './ToolBar';
-import DataTable from './DataTable';
-import SearchComponent from './SearchComponent';
+import DataTable from './MainTable';
+import MainTable from './MainTable';
 
 function QueryData({ backendURL }) { // Ensure backendURL is received as prop
   const [selectedTable, setSelectedTable] = useState('persons');
@@ -48,8 +48,7 @@ function QueryData({ backendURL }) { // Ensure backendURL is received as prop
     <div>
       <ToolBar updateSelectedTable={updateSelectedTable} selectedTable={selectedTable} backendURL={backendURL} />
       <CategoryMenu selectedTable={selectedTable} updateCategories={updateCategories} backendURL={backendURL} />
-      {/* Assuming DataTable is prepared to receive and process the data prop */}
-      <DataTable backendURL={backendURL} tableName={selectedTable} columnName={selectedCategories} />
+      <MainTable backendURL={backendURL} tableName={selectedTable} columnName={selectedCategories} />
     </div>
   );
 }
