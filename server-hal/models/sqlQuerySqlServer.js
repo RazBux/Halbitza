@@ -38,20 +38,47 @@ async function getDataByQuery(sqlQuery) {
     }
 }
 
-async function createSqlQuery({ tableName, columnList }) {
-  let columns = "*"; // Default to all columns if none are specified
-
-  // If columnList is provided and is not empty, join the list into a string
-  if (Array.isArray(columnList) && columnList.length > 0) {
-    columns = columnList.join(', ');
+async function createSqlQuery({ tableName, columnList, id }) {
+    let columns = "*"; // Default to all columns if none are specified
+  
+    // If columnList is provided and is not empty, join the list into a string
+    if (Array.isArray(columnList) && columnList.length > 0) {
+      columns = columnList.join(', ');
+    }
+  
+    // Construct the SQL query string
+    let query = `SELECT ${columns} FROM ${tableName}`;
+    const id_name = tableName == 'persons' ? 'id' : 'pers_id'; 
+    // If id is provided, add a WHERE clause to filter by id
+    if (id !== undefined) {
+      query += ` WHERE ${id_name} = '${id}'`;
+    }
+  
+    // Terminate the SQL query
+    query += ';';
+  
+    console.log(query);
+  
+    // Execute the query and return the results
+    return getDataByQuery(query);
   }
 
-  // Construct the SQL query string
-  const query = `SELECT ${columns} FROM ${tableName};`;
+// async function createSqlQuery({ tableName, columnList }) {
+//   let columns = "*"; // Default to all columns if none are specified
 
-  // Execute the query and return the results
-  return getDataByQuery(query);
-}
+//   // If columnList is provided and is not empty, join the list into a string
+//   if (Array.isArray(columnList) && columnList.length > 0) {
+//     columns = columnList.join(', ');
+//   }
+
+//   // Construct the SQL query string
+//   const query = `SELECT ${columns} FROM ${tableName};`;
+
+//   console.log(query);
+
+//   // Execute the query and return the results
+//   return getDataByQuery(query);
+// }
 
 async function insertIntoTable(tableName, data) {
     try {
@@ -99,16 +126,19 @@ async function insertIntoTable(tableName, data) {
 
 
 // Search people by ID in the database
-// http://localhost:8000/api/search/persons/85
+// http://localhost:8000/api/v1/search/persons/85
 async function searchPeopleById(tableName, pattern) {
     try {
+        // this line help the search for people.
+        const col = (tableName === 'persons') ? 'id' : 'pers_id';
+        
         // Ensure there's a safe way to include the table name to prevent SQL injection
         // Directly interpolating tableName can be dangerous without proper sanitation
         // This example does NOT include tableName sanitation; be cautious and implement as necessary
         let pool = await sql.connect(connectionString);
         let result = await pool.request()
             .input('pattern', sql.VarChar, `${pattern}%`)
-            .query(`SELECT * FROM ${tableName} WHERE id LIKE @pattern;`);
+            .query(`SELECT * FROM ${tableName} WHERE ${col} LIKE @pattern;`);
         console.log(result)
         // Assuming the structure of rows is compatible with what you expect
         const data = result.recordset.map(({ id, id_color, boss, ...otherColumns }) => ({ id, id_color, boss, ...otherColumns }));

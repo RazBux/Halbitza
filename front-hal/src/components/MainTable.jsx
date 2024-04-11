@@ -67,14 +67,8 @@ const MainTable = ({ tableName, columnName, backendURL }) => {
             {!loading && !error && <DataTable data={searchResults} onRowSelect={handleSelectPerson} />}
             
             {showDetails && selectedPerson && (
-                <DetailCard person={selectedPerson} onClose={handleCloseDetailCard} />    
+                <DetailCard backendURL={backendURL} person={selectedPerson} onClose={handleCloseDetailCard} />    
             )}
-            {/* {selectedPerson && (
-                <DetailCard person={selectedPerson}
-                    show={showDetailsModal}
-                    onClose={() => setShowDetailsModal(false)}
-                />
-            )} */}
         </div>
 
     );

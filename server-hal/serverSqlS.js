@@ -150,25 +150,46 @@ router.get(`${apiV}/query`, async (req, res) => {
  *         description: An error occurred on the server.
  */
 router.get(`${apiV}/data`, async (req, res) => {
-  // Getting all the we want by passing TableName & wanted column. 
-  // if no column passed. it will automaticly send all the data avilable. 
-  // ex. uri: http://localhost:8000/api/v1/data?tableName=persons&columns=name_he,name_en,id,age
-  // ITF - create a function to check the names of the column if they are valid. if not - remove them and print an error.
   const tableName = req.query.tableName;
   const columnList = req.query.columns ? req.query.columns.split(',') : undefined;
+  const id = req.query.id ? req.query.id : undefined; // Parse the id to an integer
 
+  console.log(req.query)
+  // console.log(req);
   // Ensure tableName is provided
   if (!tableName) {
     return res.status(400).send('Table name is required.');
   }
 
   try {
-    const data = await createSqlQuery({ tableName, columnList });
+    const data = await createSqlQuery({ tableName, columnList, id });
     res.json(data);
   } catch (error) {
     res.status(500).send(error.toString());
   }
 });
+
+//original
+// router.get(`${apiV}/data`, async (req, res) => {
+//   // Getting all the we want by passing TableName & wanted column. 
+//   // if no column passed. it will automaticly send all the data avilable. 
+//   // ex. uri: http://localhost:8000/api/v1/data?tableName=persons&columns=name_he,name_en,id,age
+//   // ITF - create a function to check the names of the column if they are valid. if not - remove them and print an error.
+//   const tableName = req.query.tableName;
+//   const columnList = req.query.columns ? req.query.columns.split(',') : undefined;
+
+//   // Ensure tableName is provided
+//   if (!tableName) {
+//     return res.status(400).send('Table name is required.');
+//   }
+
+//   try {
+//     const data = await createSqlQuery({ tableName, columnList });
+//     res.json(data);
+//   } catch (error) {
+//     res.status(500).send(error.toString());
+//   }
+// });
 
 
 
@@ -264,5 +285,9 @@ router.get(`${apiV}/search/:tableName/:id`, async (req, res) => {
 // app.listen(port, () => {
 //   console.log(`Server running on port ${port}`);
 // });
+
+
+
+
 
 module.exports = router;

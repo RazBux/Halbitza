@@ -194,12 +194,12 @@ hr {
   width: 90%;
 }
 
-.modal-close-button {
+ .modal-close-button {
   float: right;
   border: none;
   background: none;
-  font-size: 1.5rem;
-}
+  font-size: 1rem;
+} 
 
 /* Add styles for the add-person-button for consistency and positioning */
 .add-person-button {
