@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import Select from 'react-select';
+import { FaSync } from 'react-icons/fa';
 
 const CategoryMenu = ({ selectedTable, updateCategories, backendURL }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [options, setOptions] = useState([]);
   const [selectedOptions, setSelectedOptions] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false); // New state for tracking submission
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -55,7 +57,6 @@ const CategoryMenu = ({ selectedTable, updateCategories, backendURL }) => {
     // The rest of your component rendering code, including Select component and button
     <div>
       <br/>
-      {/* <h2>Categories</h2> */}
       <Select
         isMulti
         placeholder="Select categories..."

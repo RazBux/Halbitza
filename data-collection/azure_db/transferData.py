@@ -1,85 +1,48 @@
 import sqlite3
 import pyodbc
 from azureCreds import connection_string
+from datetime import datetime
 
-
-def transform_persons(row):
-    id, family_he, family_en, family_ar, name_he, name_en, name_ar, birth_year, age = (
-        row
-    )
-    # Calculate the age_group based on the tens digit of age
-    age_group = age // 10 if age else None  # Handles case where age might be None
+def transfer_table_data(sqlite_cursor, sqlserver_cursor, source_table_name, dest_table_name):
+    # Query to fetch data from the source table (SQLite)
+    sqlite_cursor.execute(f"SELECT pers_id, city FROM {source_table_name} WHERE length(pers_id) = 9")
+    rows = sqlite_cursor.fetchall()
+    print(rows)
     
-    # Return the transformed row in the order expected by the SQL Server persons table
-    return (
-        id,
-        family_he,
-        family_en,
-        family_ar,
-        name_he,
-        name_en,
-        name_ar,
-        birth_year,
-        age,
-        age_group,
-    )
-
-
-# Example of transferring data for one table
-def transfer_table_data(
-    source_cursor,
-    dest_cursor,
-    source_db_name,
-    dest_table_name,
-):
-    query = f"""
-        SELECT id, family_he, family_en,family_ar, name_he,name_en,name_ar, birth_year, age
-        FROM {source_db_name}
-        WHERE length(id) = 9 
-    """
-    source_cursor.execute(query)
-    rows = source_cursor.fetchall()
-    # transformed_rows = [transform_persons(row) for row in rows]
-
-    # print(transformed_rows)
-        
     for row in rows:
-        # The INSERT statement now matches the SQL Server persons table structure, excluding the auto-generated pers_id
-        dest_cursor.execute(
-            f"""
-            INSERT INTO {dest_table_name} (id, family_he, family_en, family_ar, name_he, name_en, name_ar, birth_year, age, age_group)
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, {row[-1]// 10 if row[-1] else 0})
-        """,
-            row,
-        )
+        pers_id = row[0]  # Assuming pers_id is the first element of the row tuple
+
+        # Check if pers_id exists in the persons table
+        sqlserver_cursor.execute("SELECT COUNT(*) FROM persons WHERE id = ?", (pers_id,))
+        if sqlserver_cursor.fetchone()[0] > 0:
+            # Safe to insert since pers_id exists in the persons table
+            try:
+                sqlserver_cursor.execute(
+                    f"""
+                    INSERT INTO addresses (pers_id, city)
+                    VALUES (?, ?)
+                    """,
+                    row
+                )
+            except pyodbc.IntegrityError as e:
+                print(f"Failed to insert row with pers_id {pers_id} due to an integrity error: {e}")
+        else:
+            print(f"Skipping insert for pers_id {pers_id}: not found in persons table.")
 
 
-# Define any necessary transformation functions
-def transform_persons(row):
-    # Transform the data as needed
-    return row
 
-
-if __name__ == '__main__': 
-    print("hell0")
-
+if __name__ == "__main__":
     # Connect to the SQLite database
-    sqlite_conn = sqlite3.connect(
-        "/Users/razbuxboim/Desktop/Halbitza/server-hal/db/workers_database_2023_cleaned.sqlite"
-    )
+    db_path = "/Users/razbuxboim/Desktop/Halbitza/excel_data_new.db"
+    sqlite_conn = sqlite3.connect(db_path)
     sqlite_cursor = sqlite_conn.cursor()
 
     # Connect to the SQL Server database
-    # connectionString = "sqlcmd -S tcp:halvitsa-db-server.database.windows.net,1433 -U dbadmin -P 'Passw0rd!@#$%^' -d havitsa-db"
     sqlserver_conn = pyodbc.connect(connection_string)
     sqlserver_cursor = sqlserver_conn.cursor()
 
-    # the name of the main table
-    source_db_name = "all_data_cleaned"
-
     # Transfer data for each table
-    transfer_table_data(
-        sqlite_cursor, sqlserver_cursor, source_db_name,"persons")
+    transfer_table_data(sqlite_cursor, sqlserver_cursor, "addresses", "addresses")
 
     # Don't forget to commit and close connections!
     sqlserver_conn.commit()

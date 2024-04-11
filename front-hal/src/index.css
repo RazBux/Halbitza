@@ -1,5 +1,6 @@
 @tailwind base;
 @tailwind components;
+
 *,
 *::before,
 *::after {
@@ -10,16 +11,27 @@
 
 @layer components {
   .top-navigation-icon {
-    @apply text-gray-500
-    mr-3 ml-4
-    transition duration-300 ease-in-out 
-    hover:text-pink-400 
-    cursor-pointer;
+    @apply text-gray-500 mr-3 ml-4 transition duration-300 ease-in-out hover:text-pink-400 cursor-pointer;
   }
+
+  .custom-button {
+    @apply 
+      bg-blue-200 text-gray-700
+      px-2.5 py-1
+      rounded-md
+      cursor-pointer 
+      text-sm
+      border border-gray-600 shadow 
+      transition-colors duration-300 mt-2
+      hover:bg-blue-300 hover:text-gray-700
+  }
+
+
 
   .top-navigation-icon:first {
     @apply ml-auto mr-4;
   }
 
 }
+
 @tailwind utilities;

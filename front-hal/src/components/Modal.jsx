@@ -13,20 +13,11 @@ const Modal = ({ show, children, onClose }) => {
   return (
     ///////without scrollable container //////
     ///////that hold the X button allways in the /////
-
-    // <div className="modal-backdrop">
-    //   <div className="modal-content">
-    //     <button onClick={onClose} className="modal-close-button">X</button>
-    //     {children}
-    //   </div>
-    // </div>
-
-    //with css that holds the X button on top 
     <div className="modal-backdrop">
       <div className="modal-content">
         <button onClick={onClose} className="modal-close-button">X</button>
         <div className="modal-scroll-container">
-          {children} {/* Your scrollable content goes here */}
+          {children}
         </div>
       </div>
     </div>

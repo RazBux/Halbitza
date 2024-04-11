@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import "../App.css"
 
-const DetailCard = ({ person, onPersonUpdated }) => {
+// const DetailCard = ({show, person, onClose,  onPersonUpdated }) => {
+const DetailCard = ({ person, onClose }) => {
     const [editMode, setEditMode] = useState(false);
     const [editedPerson, setEditedPerson] = useState({});
 
@@ -15,12 +17,18 @@ const DetailCard = ({ person, onPersonUpdated }) => {
 
     const handleSave = () => {
         setEditMode(false);
-        onPersonUpdated(editedPerson);
     };
 
+    const [selectedEmoji, setSelectedEmoji] = useState('');
+    const emojis = ['😀', '😂', '🤣', '😍', '😒', '😎', '😢', '😡']; 
+
     return (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mt-5">
+
+        // <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 mt-5">
+            <div className="modal-backdrop">
+                <div className="modal-content">
             <h3 className="text-xl dark:text-white font-semibold mb-4">Person Details</h3>
+            <button onClick={onClose} className="modal-close-button">X</button>
             {editMode ? (
                 <form onSubmit={(e) => e.preventDefault()} className="space-y-4">
                     {Object.keys(editedPerson).map(key => (
@@ -65,69 +73,9 @@ const DetailCard = ({ person, onPersonUpdated }) => {
                     </div>
                 </div>
             )}
+            </div>
         </div>
     );
 };
 
 export default DetailCard;
-
-
-// import React, { useState, useEffect } from 'react';
-
-// const DetailCard = ({ person, onPersonUpdated }) => {
-//     const [editMode, setEditMode] = useState(false);
-//     const [editedPerson, setEditedPerson] = useState({});
-
-//     useEffect(() => {
-//         setEditedPerson(person);
-//     }, [person]);
-
-//     const handleChange = (event) => {
-//         const { name, value } = event.target;
-//         setEditedPerson(prev => ({ ...prev, [name]: value }));
-//     };
-
-//     const handleSave = () => {
-//         setEditMode(false);
-//         onPersonUpdated(editedPerson);
-//     };
-
-//     return (
-//         <div className="bg-white rounded-lg shadow-lg p-5 mt-5">
-//             <h3 className="text-lg font-semibold mb-4">Person Details:</h3>
-//             {editMode ? (
-//                 Object.keys(editedPerson).map(key => (
-//                     <div key={key} className="mb-4">
-//                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor={key}>
-//                             {key.charAt(0).toUpperCase() + key.slice(1)}:
-//                         </label>
-//                         <input
-//                             id={key}
-//                             type="text"
-//                             name={key}
-//                             value={editedPerson[key]}
-//                             onChange={handleChange}
-//                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-//                         />
-//                     </div>
-//                 ))
-//             ) : (
-//                 Object.keys(person || {}).map(key => (
-//                     <p key={key} className="mb-2">
-//                         <strong>{key.charAt(0).toUpperCase() + key.slice(1)}:</strong> {person[key]}
-//                     </p>
-//                 ))
-//             )}
-//             <div className="flex justify-end mt-4">
-//                 <button
-//                     onClick={() => setEditMode(!editMode)}
-//                     className={`py-2 px-4 rounded ${editMode ? 'bg-blue-500 hover:bg-blue-700 text-white' : 'bg-gray-500 hover:bg-gray-700 text-white'}`}
-//                 >
-//                     {editMode ? 'Save Changes' : 'Edit'}
-//                 </button>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default DetailCard;

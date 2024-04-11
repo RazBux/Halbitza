@@ -74,7 +74,7 @@ const AddPersonForm = ({ tableName, backendURL }) => {
     if (loading) return <p>Loading schema...</p>;
     if (error) return <p>Error: {error}</p>;
 
-    const excludedSubstrings = ['_id', '_ar', '_en', '_group', 'age'];
+    const excludedSubstrings = ['_ar', '_en', '_group', 'age'];
 
     return (
         <form onSubmit={handleSubmit} className="add-person-form">

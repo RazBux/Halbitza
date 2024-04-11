@@ -6,17 +6,23 @@ import DetailCard from './DetailCard'; // Assume imported correctly
 import SearchInput from './table/SearchInput';
 import DataTable from './table/displayTable'; // Path to your DataTable component
 
-const MainTable = ({ tableName, columnName ,backendURL }) => {
+const MainTable = ({ tableName, columnName, backendURL }) => {
     const [searchParams, setSearchParams] = useState({ id: '' });
     const [searchResults, setSearchResults] = useState([]);
     const [selectedPerson, setSelectedPerson] = useState(null);
     const [showDetailsModal, setShowDetailsModal] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
         debouncedSearch(searchParams.id);
     }, [searchParams.id]);
+
+    const handleCloseDetailCard = () => {
+        setShowDetails(false); // Assuming you toggle visibility with this boolean state
+    };
+
 
     const handleInputChange = (e) => {
         const { value } = e.target;
@@ -24,8 +30,9 @@ const MainTable = ({ tableName, columnName ,backendURL }) => {
     };
 
     const handleSelectPerson = (person) => {
+        console.log("Person selected:", person);
         setSelectedPerson(person);
-        setShowDetailsModal(true);
+        setShowDetails(true);
     };
 
     const debouncedSearch = debounce(async (idPattern) => {
@@ -58,12 +65,18 @@ const MainTable = ({ tableName, columnName ,backendURL }) => {
             {loading && <div>Loading...</div>}
             {error && <div>Error! {error}</div>}
             {!loading && !error && <DataTable data={searchResults} onRowSelect={handleSelectPerson} />}
-            {showDetailsModal && selectedPerson && (
-                <Modal show={showDetailsModal} onClose={() => setShowDetailsModal(false)}>
-                    <DetailCard person={selectedPerson} />
-                </Modal>
+            
+            {showDetails && selectedPerson && (
+                <DetailCard person={selectedPerson} onClose={handleCloseDetailCard} />    
             )}
+            {/* {selectedPerson && (
+                <DetailCard person={selectedPerson}
+                    show={showDetailsModal}
+                    onClose={() => setShowDetailsModal(false)}
+                />
+            )} */}
         </div>
+
     );
 };
 
