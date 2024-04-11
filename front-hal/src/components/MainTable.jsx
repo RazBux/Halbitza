@@ -67,7 +67,7 @@ const MainTable = ({ tableName, columnName, backendURL }) => {
             {!loading && !error && <DataTable data={searchResults} onRowSelect={handleSelectPerson} />}
             
             {showDetails && selectedPerson && (
-                <DetailCard backendURL={backendURL} person={selectedPerson} onClose={handleCloseDetailCard} />    
+                <DetailCard backendURL={backendURL} tableName={tableName} person={tableName == 'persons' ? selectedPerson.id : selectedPerson.pers_id} onClose={handleCloseDetailCard} />    
             )}
         </div>
 
