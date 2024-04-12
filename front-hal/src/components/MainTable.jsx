@@ -40,7 +40,9 @@ const MainTable = ({ tableName, columnName, backendURL }) => {
         setError('');
         try {
             // if there isn't id pattern - display all the data...
-            const url = idPattern ? `${backendURL}/search/${tableName}/${encodeURIComponent(idPattern)}` : `${backendURL}/data?tableName=${tableName}&columns=${columnName}`;
+            const allDataUrl = `${backendURL}/data?tableName=${tableName}&columns=${columnName}`;
+            const url = idPattern ? `${backendURL}/search/${tableName}/${encodeURIComponent(idPattern)}` : allDataUrl ;
+            console.log("MainTable url:", url)
             const response = await fetch(url, {
                 method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
