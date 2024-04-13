@@ -3,6 +3,8 @@ const bodyParser = require('body-parser');
 const app = express();
 const port = 8000;
 const cors = require('cors');
+// const sql = require('mssql');
+// const { connectionString } = require('./models/config');
 
 const router = express.Router();
 
@@ -13,7 +15,8 @@ const {
   getDataByQuery,
   createSqlQuery,
   insertIntoTable,
-  searchPeopleById
+  searchPeopleById,
+  updateTableRecord
 } = require('./models/sqlQuerySqlServer'); // Adjusted for SQL Server
 
 const apiV = '/api/v1'
@@ -237,7 +240,19 @@ router.post(`${apiV}/data`, async (req, res) => {
   }
 });
 
-
+// for updating row by id
+router.post('/api/v1/update/:table/:id', async (req, res) => {
+  const { table, id } = req.params;
+  const { updates } = req.body;
+  console.log("Received updates:", updates);
+  try {
+      const result = await updateTableRecord(table, id, updates);
+      res.send(result);
+  } catch (err) {
+      console.error('Failed to update record:', err);
+      res.status(500).send('Failed to update');
+  }
+});
 
 /**
  * @swagger

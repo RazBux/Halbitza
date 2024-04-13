@@ -10,7 +10,7 @@ async function getTableColumns(tableName) {
     } catch (err) {
         console.error(err);
         throw err;
-    } 
+    }
 }
 
 async function getAllTableNames() {
@@ -40,28 +40,28 @@ async function getDataByQuery(sqlQuery) {
 
 async function createSqlQuery({ tableName, columnList, id }) {
     let columns = "*"; // Default to all columns if none are specified
-  
+
     // If columnList is provided and is not empty, join the list into a string
     if (Array.isArray(columnList) && columnList.length > 0) {
-      columns = columnList.join(', ');
+        columns = columnList.join(', ');
     }
-  
+
     // Construct the SQL query string
     let query = `SELECT ${columns} FROM ${tableName}`;
-    const id_name = tableName == 'persons' ? 'id' : 'pers_id'; 
+    const id_name = tableName == 'persons' ? 'id' : 'pers_id';
     // If id is provided, add a WHERE clause to filter by id
     if (id !== undefined) {
-      query += ` WHERE ${id_name} = '${id}'`;
+        query += ` WHERE ${id_name} = '${id}'`;
     }
-  
+
     // Terminate the SQL query
     query += ';';
-  
+
     console.log(query);
-  
+
     // Execute the query and return the results
     return getDataByQuery(query);
-  }
+}
 
 // async function createSqlQuery({ tableName, columnList }) {
 //   let columns = "*"; // Default to all columns if none are specified
@@ -99,7 +99,7 @@ async function insertIntoTable(tableName, data) {
 
         const placeholders = Object.keys(filteredData).map((_, index) => `@param${index}`).join(', ');
         const request = new sql.Request();
-        
+
         Object.keys(filteredData).forEach((key, index) => {
             const type = key === 'family_he' || key === 'name_he' ? sql.NVarChar : sql.VarChar;
             request.input(`param${index}`, type, filteredData[key]);
@@ -107,7 +107,7 @@ async function insertIntoTable(tableName, data) {
 
         const query = `INSERT INTO ${tableName} (${columns}) VALUES (${placeholders});`;
         console.log('insert query:', query);
-        
+
         const result = await request.query(query);
         console.log(`Record inserted into ${result}.`);
 
@@ -131,7 +131,7 @@ async function searchPeopleById(tableName, pattern) {
     try {
         // this line help the search for people.
         const col = (tableName === 'persons') ? 'id' : 'pers_id';
-        
+
         // Ensure there's a safe way to include the table name to prevent SQL injection
         // Directly interpolating tableName can be dangerous without proper sanitation
         // This example does NOT include tableName sanitation; be cautious and implement as necessary
@@ -152,6 +152,33 @@ async function searchPeopleById(tableName, pattern) {
 }
 
 
+
+async function updateTableRecord(table, id, updates) {
+    try {
+        await sql.connect(connectionString);
+
+        const transaction = new sql.Transaction();
+        await transaction.begin();
+
+        const request = new sql.Request(transaction);
+        const keys = Object.keys(updates);
+        const values = keys.map(key => `${key} = '${updates[key]}'`);  // Direct insertion of values
+        const whereColumn = table === 'person' ? 'id' : 'pers_id';
+        const query = `UPDATE ${table} SET ${values.join(', ')} WHERE ${whereColumn} = ${id}`;
+
+        console.log("update query >>>", query);
+
+        await request.query(query);
+        await transaction.commit();
+
+        return 'Update successful';
+    } catch (err) {
+        console.error('Failed to execute query:', err);
+        throw err; // Rethrow to handle error in the calling function
+    }
+}
+
+
 // Add other functions you need, adapting them in a similar way
 
 module.exports = {
@@ -160,5 +187,6 @@ module.exports = {
     getDataByQuery,
     insertIntoTable,
     createSqlQuery,
-    searchPeopleById
+    searchPeopleById,
+    updateTableRecord
 };

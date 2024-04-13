@@ -68,33 +68,96 @@ const DetailCard = ({ backendURL, tableName, person, onClose }) => {
     };
 
 
-    const customComparator = (objValue, othValue) => {
-        if (objValue === "" && othValue === null) {
-            return true;  // Treat empty string and null as equal
-        } else if (objValue === null && othValue === "") {
-            return true;  // Treat null and empty string as equal
+    // const customComparator = (objValue, othValue) => {
+    //     if (objValue === "" && othValue === null) {
+    //         return true;  // Treat empty string and null as equal
+    //     } else if (objValue === null && othValue === "") {
+    //         return true;  // Treat null and empty string as equal
+    //     }
+    //     // For all other values, rely on the default behavior of isEqual
+    // };
+
+    // const getChangedProperties = (original, edited) => {
+    //     const changes = {};
+    //     Object.keys(edited).forEach(key => {
+    //         // Use trimmed values for comparison to treat "   " as null
+    //         const originalValue = String(original[key]).trim() === "" ? null : original[key];
+    //         const editedValue = String(edited[key]).trim() === "" ? null : edited[key];
+    //         console.log("originalValue:", originalValue);
+    //         console.log("editedValue:",editedValue);
+    //         // Compare values after deciding if they are null
+    //         if (editedValue !== originalValue) {
+    //             changes[key] = editedValue;
+    //         }
+    //     });
+    //     console.log("the changes: ", changes);
+    //     return changes;
+    // };
+
+    function getChangedProperties(original, edited) {
+        if (original.length === 0 || edited.length === 0) {
+            console.log("No objects to compare.");
+            return {};
         }
-        // For all other values, rely on the default behavior of isEqual
-    };
     
+        const originalObj = original[0];
+        const editedObj = edited[0];
+        const changes = {};
+    
+        Object.keys(editedObj).forEach(key => {
+            const originalValue = originalObj[key];
+            const editedValue = editedObj[key];
+    
+            // Normalize values: Convert to trimmed string or null if empty
+            const normalizedOriginal = typeof originalValue === 'string' ? originalValue.trim() || null : originalValue;
+            const normalizedEdited = typeof editedValue === 'string' ? editedValue.trim() || null : editedValue;
+    
+            // Logging each step
+            // console.log(`Checking key: ${key}`);
+            // console.log(`Original value: '${originalValue}' (${typeof originalValue})`);
+            // console.log(`Edited value: '${editedValue}' (${typeof editedValue})`);
+            // console.log(`Normalized Original: '${normalizedOriginal}'`);
+            // console.log(`Normalized Edited: '${normalizedEdited}'`);
+    
+            // Only add to changes if values differ
+            if (normalizedOriginal !== normalizedEdited) {
+                changes[key] = normalizedEdited;
+                console.log(`Change detected for ${key}: '${normalizedOriginal}' -> '${normalizedEdited}'`);
+            }
+        });
+        console.log("changes:", changes);
+        return changes;
+    }
+    
+    
+
     const handleSave = async () => {
-        console.log("original::", originalPerson);
-        console.log("modify??", editedPerson);
-        // if (JSON.stringify(editedPerson) !== JSON.stringify(originalPerson)) {
-        // if (!_.isEqual(originalPerson, editedPerson)) {
-        if (!_.isEqualWith(originalPerson, editedPerson, customComparator)) {
+        console.log("originalPerson", originalPerson);
+        console.log("editedPerson", editedPerson);
+        const changes = getChangedProperties(originalPerson, editedPerson);
+        console.log("Changes to send:", changes); // Check what's actually being sent
+
+        if (Object.keys(changes).length > 0) {  // Check if there are any real changes
             try {
-                const response = await fetch(`${backendURL}/api/v1/update/${selectedTable}`, {
+                const updateQuery = `${backendURL}/update/${selectedTable}/${person}`;
+                console.log("update query:", updateQuery);
+
+                const response = await fetch(updateQuery, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify(editedPerson)
+                    body: JSON.stringify({
+                        id: person.id, // Confirm this is correctly capturing the intended ID
+                        updates: changes
+                    })
                 });
+
                 if (response.ok) {
-                    setEditMode(false); // Exit edit mode on successful update
                     console.log('Update successful');
-                    setOriginalPerson([...editedPerson]);
+                    setEditMode(false);  // Exit edit mode on successful update
+                    setOriginalPerson({ ...editedPerson });  // Update the originalPerson to reflect the new state
+                    alert('Update successful');
                 } else {
                     throw new Error('Failed to update');
                 }
